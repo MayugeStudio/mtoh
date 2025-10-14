@@ -1,0 +1,3 @@
+01 |0| Implement Lexer
+02 |0| Get target-path from command-line arguments
+03 |0| Get markdown files recursively from specified directories
