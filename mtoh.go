@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"os"
+	"fmt"
 	"log"
 	"path/filepath"
 	"io/fs"
@@ -110,6 +110,35 @@ func lex_markdown(md *Markdown) []*Tag {
 	return out
 }
 
+func generate_tag_str(tag *Tag) string {
+		out := "<" + string(tag.Type) + ">"
+		out += tag.Content
+		out += "</" + string(tag.Type) + ">"
+		out += "\n"
+		return out
+}
+
+func generate_html(tags []*Tag) string {
+	i := 0
+	html := ""
+	for i < len(tags){
+		tag := tags[i]
+		switch (tag.Type) {
+		case Header1, Header2, Header3, Header4: {
+			html += generate_tag_str(tag)
+		}
+		case ListItem: {
+			html += generate_tag_str(tag)
+		}
+		case Paragraph: {
+			html += generate_tag_str(tag)
+		}
+		}
+		i += 1
+	}
+	return html
+}
+
 func main() {
 	markdowns, err := read_markdowns("./testdata/") 
 	if err != nil {
@@ -117,9 +146,8 @@ func main() {
 	}
 
 	for _, markdown := range markdowns {
-		for _, tag := range lex_markdown(markdown) {
-			fmt.Println(tag.Type, tag.Content)
-		}
+		tags :=  lex_markdown(markdown)
+		fmt.Println(generate_html(tags))
 	}
 }
 
