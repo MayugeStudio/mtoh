@@ -21,9 +21,6 @@ const (
 	Header2         = "h2"
 	Header3         = "h3"
 	Header4         = "h4"
-	UnorderedList   = "ul"
-	OrderedList     = "ol"
-	ListItem        = "li"
 	Paragraph       = "p"
 )
 
@@ -86,11 +83,10 @@ func lex_line(line string) *Tag {
 		tagType = Header3
 	} else if head == "####" {
 		tagType = Header4
-	} else if head == "-" {
-		tagType = ListItem
 	} else {
 		tagType = Paragraph
 	}
+
 	return &Tag{
 		Type: tagType, 
 		Content: content,
@@ -121,13 +117,11 @@ func generate_tag_str(tag *Tag) string {
 func generate_html(tags []*Tag) string {
 	i := 0
 	html := ""
+
 	for i < len(tags){
 		tag := tags[i]
 		switch (tag.Type) {
 		case Header1, Header2, Header3, Header4: {
-			html += generate_tag_str(tag)
-		}
-		case ListItem: {
 			html += generate_tag_str(tag)
 		}
 		case Paragraph: {
